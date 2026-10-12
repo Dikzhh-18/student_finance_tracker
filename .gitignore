@@ -1,3 +1,4 @@
+
 # Python
 __pycache__/
 *.py[cod]
@@ -10,17 +11,26 @@ ENV/
 .pytest_cache/
 .coverage
 .env
+!.env.example
 
 # Database
 finance.db
 *.db
+*.sqlite
+*.sqlite3
 
 # Node
 node_modules/
 
+# Vercel
+.vercel/
+
+# Object files
+*.o
+
+# Ada Library Information
+*.ali
+
 # OS
 .DS_Store
 Thumbs.db
-
-# Vercel
-.vercel/
