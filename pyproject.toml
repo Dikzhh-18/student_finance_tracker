@@ -8,7 +8,7 @@ dependencies = [
     "uvicorn",
     "sqlalchemy",
     "psycopg[binary]",
-    # Tambahkan library lain yang Anda pakai di sini (misal: pydantic, jinja2, dll)
+    "itsdangerous"
 ]
 
 [tool.vercel]
