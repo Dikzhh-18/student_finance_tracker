@@ -9,6 +9,8 @@ dependencies = [
     "sqlalchemy",
     "psycopg[binary]",
     "itsdangerous",
+    "jinja2",
+    "pydantic",
 ]
 
 [tool.vercel]
