@@ -5,13 +5,17 @@ description = "Student finance tracker application"
 requires-python = ">=3.10"
 dependencies = [
     "fastapi",
-    "uvicorn",
+    "uvicorn[standard]",
     "sqlalchemy",
     "psycopg[binary]",
     "itsdangerous",
     "jinja2",
     "pydantic",
     "python-dotenv",
+    "python-multipart",
+    "pillow",
+    "pytest",
+    "httpx",
 ]
 
 [tool.vercel]
