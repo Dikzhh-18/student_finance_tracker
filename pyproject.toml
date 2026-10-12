@@ -1,3 +1,16 @@
+[project]
+name = "student-finance-tracker"
+version = "0.1.0"
+description = "Student finance tracker application"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "sqlalchemy",
+    "psycopg[binary]",
+    # Tambahkan library lain yang Anda pakai di sini (misal: pydantic, jinja2, dll)
+]
+
 [tool.vercel]
 entrypoint = "backend.main:app"
 
