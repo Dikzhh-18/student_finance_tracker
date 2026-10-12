@@ -11,7 +11,7 @@ dependencies = [
     "itsdangerous",
     "jinja2",
     "pydantic",
-    "python-dotenv",  # <- Tambahkan ini di sini
+    "python-dotenv",
 ]
 
 [tool.vercel]
