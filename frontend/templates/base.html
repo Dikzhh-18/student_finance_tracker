@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="{{ '#0f172a' if request.session.get('theme') == 'dark' else '#f8fafc' }}">
     <title>{% block title %}Student Finance{% endblock %} · Finance Tracker</title>
+    <link rel="icon" href="{{ url_for('static', path='/images/favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/output.css') }}">
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800 antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
