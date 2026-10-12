@@ -386,8 +386,5 @@ def delete_transaction(user_id: int, tx_id: int) -> bool:
 
 def get_used_categories(user_id: int) -> list[str]:
     with get_connection() as conn:
-        rows = conn.execute(
-            text("SELECT DISTINCT category FROM transactions WHERE user_id = :user_id ORDER BY 1"), 
-            {"user_id": user_id}
-            ).scalars().all()
+        rows = conn.execute(text("SELECT DISTINCT category FROM transactions WHERE user_id = :user_id ORDER BY 1"), {"user_id": user_id}).scalars().all()
     return list(dict.fromkeys([*DEFAULT_CATEGORIES, *rows]))
