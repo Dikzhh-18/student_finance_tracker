@@ -8,7 +8,7 @@ dependencies = [
     "uvicorn",
     "sqlalchemy",
     "psycopg[binary]",
-    "itsdangerous"
+    "itsdangerous",
 ]
 
 [tool.vercel]
