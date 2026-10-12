@@ -1,0 +1,7 @@
+<section class="min-w-0 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+    <div class="mb-4"><h2 class="text-lg font-bold text-slate-900">Pengeluaran per kategori</h2><p class="mt-1 text-sm text-slate-500">{{ monthly.month_label }}</p></div>
+    {% if expense_by_category %}
+    <div class="mx-auto w-full min-w-0 max-w-xs"><canvas id="expenseChart" class="block h-auto w-full max-w-full" height="260" aria-label="Grafik pengeluaran per kategori"></canvas></div>
+    <ul class="mt-5 grid gap-2 sm:grid-cols-2">{% for item in expense_by_category %}<li class="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm"><span class="font-medium text-slate-700">{{ item.category }}</span><span class="font-bold text-rose-600">Rp {{ "{:,.0f}".format(item.total).replace(",", ".") }}</span></li>{% endfor %}</ul>
+    {% else %}<p class="rounded-2xl bg-slate-50 py-12 text-center text-sm text-slate-500">Belum ada pengeluaran pada bulan ini.</p>{% endif %}
+</section>

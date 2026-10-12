@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit transaksi{% elif form_data.type == 'income' %}Tambah pemasukan{% else %}Tambah pengeluaran{% endif %}{% endblock %}
+{% block page_heading %}{% if editing %}Edit transaksi{% elif form_data.type == 'income' %}Tambah pemasukan{% else %}Tambah pengeluaran{% endif %}{% endblock %}
+{% block page_subtitle %}Catat transaksi dengan detail agar kondisi keuangan selalu terpantau.{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl space-y-5">
+    <div class="grid grid-cols-2 gap-3"><a href="/transactions/new?type=expense" class="rounded-2xl border p-4 text-center text-sm font-bold {% if form_data.type == 'expense' %}border-rose-200 bg-rose-50 text-rose-700{% else %}border-slate-200 bg-white text-slate-600{% endif %}">− Pengeluaran</a><a href="/transactions/new?type=income" class="rounded-2xl border p-4 text-center text-sm font-bold {% if form_data.type == 'income' %}border-emerald-200 bg-emerald-50 text-emerald-700{% else %}border-slate-200 bg-white text-slate-600{% endif %}">＋ Pemasukan</a></div>
+    {% include "partials/transaction_form.html" %}
+</div>
+{% endblock %}

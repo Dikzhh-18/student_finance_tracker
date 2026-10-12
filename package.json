@@ -1,0 +1,20 @@
+{
+  "name": "student_finance_tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./frontend/static/css/input.css -o ./frontend/static/css/output.css",
+    "watch:css": "npm exec -- @tailwindcss/cli -i ./frontend/static/css/input.css -o ./frontend/static/css/output.css --watch",
+    "test": "npm run build:css"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.0",
+    "tailwindcss": "4.3.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1"
+  }
+}

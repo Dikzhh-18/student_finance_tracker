@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@source "../../templates";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@layer utilities {
+	[data-theme="dark"] .bg-white { background-color: #111827; }
+	[data-theme="dark"] .bg-slate-50 { background-color: #0f172a; }
+	[data-theme="dark"] .bg-slate-100 { background-color: #1e293b; }
+	[data-theme="dark"] .bg-slate-200 { background-color: #334155; }
+	[data-theme="dark"] .text-slate-900,
+	[data-theme="dark"] .text-slate-800 { color: #f8fafc; }
+	[data-theme="dark"] .text-slate-700,
+	[data-theme="dark"] .text-slate-600 { color: #cbd5e1; }
+	[data-theme="dark"] .text-slate-500 { color: #94a3b8; }
+	[data-theme="dark"] .text-slate-400 { color: #64748b; }
+	[data-theme="dark"] .border-slate-100,
+	[data-theme="dark"] .border-slate-200 { border-color: #334155; }
+	[data-theme="dark"] .bg-indigo-50 { background-color: #1e1b4b; }
+	[data-theme="dark"] .bg-emerald-50 { background-color: #022c22; }
+	[data-theme="dark"] .bg-rose-50 { background-color: #4c0519; }
+	[data-theme="dark"] .bg-amber-50 { background-color: #451a03; }
+	[data-theme="dark"] .bg-indigo-100 { background-color: #312e81; }
+	[data-theme="dark"] .bg-emerald-100 { background-color: #064e3b; }
+	[data-theme="dark"] .bg-rose-100 { background-color: #881337; }
+	[data-theme="dark"] .bg-slate-950 { background-color: #020617; }
+	[data-theme="dark"] .text-emerald-700,
+	[data-theme="dark"] .text-emerald-800 { color: #6ee7b7; }
+	[data-theme="dark"] .text-rose-700,
+	[data-theme="dark"] .text-rose-800 { color: #fda4af; }
+	[data-theme="dark"] .text-indigo-700,
+	[data-theme="dark"] .text-indigo-800 { color: #a5b4fc; }
+	[data-theme="dark"] .text-amber-900 { color: #fcd34d; }
+	[data-theme="dark"] input,
+	[data-theme="dark"] select,
+	[data-theme="dark"] textarea { color-scheme: dark; }
+	[data-theme="dark"] input::placeholder,
+	[data-theme="dark"] textarea::placeholder { color: #64748b; }
+	[data-theme="dark"] .divide-slate-100 > :not(:last-child) { border-color: #334155; }
+}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+{% block page_subtitle %}Ringkasan kondisi keuanganmu dalam satu tampilan.{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    {% include "partials/summary_cards.html" %}
+    {% include "partials/monthly_summary.html" %}
+    <div class="grid gap-6 xl:grid-cols-2">
+        {% include "partials/expense_chart.html" %}
+        {% include "partials/budget_panel.html" %}
+    </div>
+    {% set list_title = "Transaksi terbaru" %}{% set show_all_link = true %}{% include "partials/transaction_list.html" %}
+    <div class="flex flex-wrap gap-3"><a href="/transactions/new?type=income" class="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-500">＋ Catat pemasukan</a><a href="/transactions/new?type=expense" class="rounded-xl bg-rose-600 px-4 py-3 text-sm font-bold text-white hover:bg-rose-500">− Catat pengeluaran</a></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>document.querySelectorAll(".budget-fill").forEach((bar) => { bar.style.width = (bar.dataset.percent || "0") + "%"; });</script>
+{% if expense_by_category %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script><script type="application/json" id="chart-data">{{ chart_data | tojson }}</script><script>const data = JSON.parse(document.getElementById("chart-data").textContent); const canvas = document.getElementById("expenseChart"); if (canvas && data.labels.length) new Chart(canvas, { type: "doughnut", data: { labels: data.labels, datasets: [{ data: data.values, backgroundColor: ["#6366f1", "#f43f5e", "#10b981", "#f59e0b", "#06b6d4", "#8b5cf6", "#64748b"], borderWidth: 0 }] }, options: { plugins: { legend: { position: "bottom" } }, cutout: "62%" } });</script>{% endif %}
+{% endblock %}

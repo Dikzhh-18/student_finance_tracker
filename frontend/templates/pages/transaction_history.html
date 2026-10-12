@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Riwayat transaksi{% endblock %}
+{% block page_heading %}Riwayat transaksi{% endblock %}
+{% block page_subtitle %}Cari, saring, dan kelola transaksi pemasukan maupun pengeluaran.{% endblock %}
+{% block content %}
+<div class="space-y-5">
+    {% include "partials/transaction_filters.html" %}
+    {% set list_title = "Semua transaksi" %}{% include "partials/transaction_list.html" %}
+</div>
+{% endblock %}

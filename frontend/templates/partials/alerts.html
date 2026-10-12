@@ -1,0 +1,15 @@
+{% if flash %}
+<div x-data="{ show: true }" x-show="show" class="mb-5 flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-medium {% if flash_type == 'error' %}border-rose-200 bg-rose-50 text-rose-700{% else %}border-emerald-200 bg-emerald-50 text-emerald-700{% endif %}" role="status">
+    <span>{{ flash }}</span>
+    <button @click="show = false" class="ml-3 text-lg font-bold opacity-70 hover:opacity-100" aria-label="Tutup">&times;</button>
+</div>
+{% endif %}
+{% if errors %}
+<div x-data="{ show: true }" x-show="show" class="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700" role="alert">
+    <div class="flex items-center justify-between">
+        <p class="font-semibold">Periksa input berikut:</p>
+        <button @click="show = false" class="text-lg font-bold opacity-70 hover:opacity-100" aria-label="Tutup">&times;</button>
+    </div>
+    <ul class="mt-2 list-disc space-y-1 pl-5">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+</div>
+{% endif %}

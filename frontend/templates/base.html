@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="{{ request.session.get('theme', 'light') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="{{ '#0f172a' if request.session.get('theme') == 'dark' else '#f8fafc' }}">
+    <title>{% block title %}Student Finance{% endblock %} · Finance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/output.css') }}">
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+    <div class="min-h-screen lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
+        <!-- Mobile Header Bar -->
+        <div class="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-900 lg:hidden">
+            <a href="/" class="flex items-center gap-3">
+                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-sm font-black text-white shadow-md">S</span>
+                <span class="text-sm font-extrabold tracking-tight text-slate-900">Student Finance</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <a href="/account" class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-indigo-50 text-xs font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-200" aria-label="Akun">{% if request.session.get('has_avatar') %}<img src="/account/avatar" alt="" class="h-full w-full object-cover">{% else %}{{ (request.session.get('user_name', 'ST')[:2]).upper() }}{% endif %}</a>
+                <button id="mobile-menu-toggle" type="button" class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700" aria-label="Buka menu navigasi" aria-controls="primary-sidebar" aria-expanded="false">
+                    <svg id="mobile-menu-open-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="mobile-menu-close-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button id="mobile-menu-backdrop" type="button" class="fixed inset-0 z-40 hidden bg-slate-950/40 backdrop-blur-[1px] lg:hidden" aria-label="Tutup menu navigasi"></button>
+
+        <!-- Sidebar / Navigation Menu -->
+        <aside id="primary-sidebar" class="fixed inset-y-0 left-0 z-50 hidden w-[min(19rem,86vw)] overflow-y-auto border-r border-slate-200 bg-white shadow-2xl transition-transform duration-200 dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-0 lg:z-auto lg:block lg:h-screen lg:w-auto lg:translate-x-0 lg:overflow-visible lg:border-b-0 lg:shadow-none">
+            <div class="flex items-center justify-between border-b border-slate-100 px-6 py-6 dark:border-slate-800 lg:border-0 lg:px-8 lg:pb-8 lg:pt-10">
+                <a href="/" class="flex items-center gap-3">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-600 text-lg font-black text-white shadow-lg shadow-indigo-200">S</span>
+                    <span><span class="block text-sm font-extrabold tracking-tight text-slate-900">Student Finance</span><span class="text-xs text-slate-500">Money, made clearer</span></span>
+                </a>
+                <button id="mobile-menu-close" type="button" class="flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 lg:hidden" aria-label="Tutup menu navigasi">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <nav aria-label="Navigasi utama" class="space-y-1 px-4 pb-5 pt-4 lg:px-5 lg:pt-0">
+                <a href="/" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('dashboard') == 'dashboard' %}bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span aria-hidden="true">⌂</span> Dashboard</a>
+                <p class="px-3 pb-1 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Catat transaksi</p>
+                <a href="/transactions/new?type=expense" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('') == 'expense' %}bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span class="shrink-0" aria-hidden="true">−</span> Tambah pengeluaran</a>
+                <a href="/transactions/new?type=income" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('') == 'income' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span class="shrink-0" aria-hidden="true">＋</span> Tambah pemasukan</a>
+                <p class="px-3 pb-1 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Analisis</p>
+                <a href="/analytics" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('') == 'analytics' %}bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span class="shrink-0" aria-hidden="true">📊</span> Grafik data</a>
+                <a href="/transactions" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('') == 'history' %}bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span class="shrink-0" aria-hidden="true">▤</span> Riwayat transaksi</a>
+                <p class="px-3 pb-1 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Personal</p>
+                <a href="/account" class="flex min-w-0 items-center gap-2 rounded-xl px-2.5 py-2.5 text-sm font-semibold {% if active_nav|default('') == 'account' %}bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300{% else %}text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800{% endif %}"><span class="shrink-0" aria-hidden="true">◎</span> Akun & profil</a>
+            </nav>
+            <div class="border-t border-slate-100 p-4 dark:border-slate-800 lg:absolute lg:inset-x-0 lg:bottom-0 lg:block">
+                <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3 dark:bg-slate-800">
+                    {% if request.session.get('has_avatar') %}<img src="/account/avatar" alt="Foto profil" class="h-10 w-10 rounded-full object-cover">{% else %}<span class="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">{{ (request.session.get('user_name', 'ST')[:2]).upper() }}</span>{% endif %}
+                    <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{{ request.session.get('user_name', 'Pengguna') }}</p><p class="truncate text-xs text-slate-500 dark:text-slate-400">{{ request.session.get('user_email', '') }}</p></div>
+                    <a href="/account" class="ml-auto text-xs font-semibold text-indigo-600">Lihat</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="min-w-0 px-4 py-6 sm:px-7 sm:py-8 lg:px-10 lg:py-10">
+
+            <!-- Page Header -->
+            <header class="mb-7 flex items-center justify-between gap-4">
+                <div class="min-w-0">
+                    <p class="text-xs font-bold uppercase tracking-[0.16em]
+                            text-indigo-600 dark:text-indigo-400">
+                        Personal finance
+                    </p>
+
+                    <h1 class="mt-1 text-2xl font-extrabold tracking-tight
+                            text-slate-900 dark:text-white sm:text-3xl">
+                        {% block page_heading %}Dashboard{% endblock %}
+                    </h1>
+
+                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                        {% block page_subtitle %}
+                            Kelola keuangan kuliahmu dengan lebih terarah.
+                        {% endblock %}
+                    </p>
+                </div>
+   
+                <!-- Date Indicator -->
+                <div class="hidden shrink-0 items-center gap-2 rounded-xl
+                            border border-slate-200 bg-white px-3 py-2
+                            text-sm font-medium text-slate-600 shadow-sm
+                            dark:border-slate-700 dark:bg-slate-900
+                            dark:text-slate-300 sm:flex">
+                    <i data-lucide="calendar-days"
+                    class="h-4 w-4 text-indigo-500"
+                    aria-hidden="true"></i>
+                    <span class="whitespace-nowrap">
+                        {% if today is defined %}
+                            {{ today.strftime('%d %b %Y') }}
+                        {% else %}
+                            {{ request.state.today.strftime('%d %b %Y') }}
+                        {% endif %}
+                    </span>
+                </div>
+            </header>
+
+            <!-- Alerts -->
+            {% include "partials/alerts.html" %}
+
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+
+            <!-- Footer -->
+            <footer class="mt-10 border-t border-slate-200 pt-5
+                        text-center text-xs text-slate-400
+                        dark:border-slate-800 dark:text-slate-500">
+                Student Finance Tracker
+                <span class="mx-1">·</span>
+                Versi pengembangan
+            </footer>
+
+        </main>
+    </div>
+    {% block scripts %}{% endblock %}
+    <script>
+        (() => {
+            const toggle = document.getElementById("mobile-menu-toggle");
+            const closeButton = document.getElementById("mobile-menu-close");
+            const sidebar = document.getElementById("primary-sidebar");
+            const backdrop = document.getElementById("mobile-menu-backdrop");
+            const openIcon = document.getElementById("mobile-menu-open-icon");
+            const closeIcon = document.getElementById("mobile-menu-close-icon");
+
+            if (!toggle || !sidebar || !backdrop) return;
+
+            const setMenuOpen = (isOpen) => {
+                sidebar.classList.toggle("hidden", !isOpen);
+                backdrop.classList.toggle("hidden", !isOpen);
+                toggle.setAttribute("aria-expanded", String(isOpen));
+                toggle.setAttribute("aria-label", isOpen ? "Tutup menu navigasi" : "Buka menu navigasi");
+                openIcon.classList.toggle("hidden", isOpen);
+                closeIcon.classList.toggle("hidden", !isOpen);
+                document.body.classList.toggle("overflow-hidden", isOpen);
+            };
+
+            toggle.addEventListener("click", () => {
+                setMenuOpen(toggle.getAttribute("aria-expanded") !== "true");
+            });
+            closeButton?.addEventListener("click", () => setMenuOpen(false));
+            backdrop.addEventListener("click", () => setMenuOpen(false));
+            sidebar.querySelectorAll("nav a").forEach((link) => {
+                link.addEventListener("click", () => setMenuOpen(false));
+            });
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") setMenuOpen(false);
+            });
+            window.matchMedia("(min-width: 1024px)").addEventListener("change", () => setMenuOpen(false));
+        })();
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
